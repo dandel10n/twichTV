@@ -36,7 +36,7 @@ function getChannelInfo(channelsList) {
     }
 
     //Итерации цикла обернуты во временную функцию для того, чтобы значение каждого i сохранялось,
-    // так как ajaxRequest() начинает выполнение позже и возвращиет только последний результат
+    // так как ajaxRequest() начинает выполнение позже и возвращает только последний результат
 
     for (var i = 0; i < channelsList.length; i++) {
         (function (index) {
@@ -52,7 +52,6 @@ function getChannelInfo(channelsList) {
 }
 
 function displayChannelInfo(data) {
-
     var channelBlock = $('<a />').attr('id', data._id);
     channelBlock.attr('class', 'channel');
     channelBlock.attr('href', data.url);
@@ -72,18 +71,25 @@ function displayChannelInfo(data) {
     var channelNameElement = $('<p />').attr('class', 'channel_name').text(data.display_name);
     channelBlock.append(channelNameElement);
 
+    var streamStatus = $('<div />').attr('class', "status").text('Offline');
+
     if (data.status == 404) {
-        var errorMessage = $('<p />').attr('class', 'channel_name').text(data.message);
-        channelBlock.append(errorMessage);
+        streamStatus.text('Error');
+        channelBlock.append(
+            $('<p />').attr('class', 'channel_name').text(data.message)
+        );
     }
+
+    channelBlock.append(streamStatus);
 }
 
 function displayStreamInfo(data) {
     if (data.stream) {
-        var streamIsOnline = $('<div />').attr('class', "status").text("Online");
+        var thisElement = '#' + data.stream.channel._id;
+        $(thisElement).find('.status').html('Online');
+
         var streamDescriptionElement = $('<p />').attr('class', 'stream_description').text(data.stream.channel.status);
-        console.log(data.stream.channel.status);
-        $('#' + data.stream.channel._id).append(streamDescriptionElement);
+        $(thisElement).append(streamDescriptionElement);
     }
 }
 
@@ -99,7 +105,7 @@ $(document).ready(function() {
         e.preventDefault();
 
         var channelName = $(".search-form_target").val();
-
+        clearSearchResult();
         getChannelInfo(channelName);
     });
 
