@@ -45,13 +45,16 @@ function getChannelInfo(channelsList) {
 
             ajaxRequest(ChannelsUrls, function(data) {
                 displayChannelInfo(data);
-                ajaxRequest(StreamsUrls, displayStreamInfo);
+                if (!data.error) {
+                    ajaxRequest(StreamsUrls, displayStreamInfo);
+                }
             });
         })(i);
     }
 }
 
 function displayChannelInfo(data) {
+    console.log(data);
     var channelBlock = $('<a />').attr('id', data._id);
     channelBlock.attr('class', 'channel');
     channelBlock.attr('href', data.url);
@@ -73,7 +76,7 @@ function displayChannelInfo(data) {
 
     var streamStatus = $('<div />').attr('class', "status").text('Offline');
 
-    if (data.status == 404) {
+    if (data.error) {
         streamStatus.text('Error');
         channelBlock.append(
             $('<p />').attr('class', 'channel_name').text(data.message)
@@ -108,5 +111,4 @@ $(document).ready(function() {
         clearSearchResult();
         getChannelInfo(channelName);
     });
-
 });
