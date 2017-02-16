@@ -74,10 +74,10 @@ function displayChannelInfo(data) {
     var channelNameElement = $('<p />').attr('class', 'channel_name').text(data.display_name);
     channelBlock.append(channelNameElement);
 
-    var streamStatus = $('<div />').attr('class', "status").text('Offline');
+    var streamStatus = $('<div />').addClass("status").text('Offline');
 
     if (data.error) {
-        streamStatus.text('Error');
+        streamStatus.addClass('errorStatus').text('Error');
         channelBlock.append(
             $('<p />').attr('class', 'channel_name').text(data.message)
         );
@@ -89,7 +89,7 @@ function displayChannelInfo(data) {
 function displayStreamInfo(data) {
     if (data.stream) {
         var thisElement = '#' + data.stream.channel._id;
-        $(thisElement).find('.status').html('Online');
+        $(thisElement).find('.status').addClass('statusOnline').html('Online');
 
         var streamDescriptionElement = $('<p />').attr('class', 'stream_description').text(data.stream.channel.status);
         $(thisElement).append(streamDescriptionElement);
