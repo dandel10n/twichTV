@@ -7,7 +7,7 @@
 
 //enhancement сделать форму, в которую можно ввести логин, информация о котором интересна
 
-var STREAM_CHANNELS_LIST = ["ESL_SC2", "OgamingSC2", "cretetion", "freecodecamp", "storbeck", "habathcx", "RobotCaleb", "noobs2ninjas", "brunofin"];
+var STREAM_CHANNELS_LIST = ["ESL_SC2", "OgamingSC2", "cretetion", "storbeck", "habathcx", "RobotCaleb", "noobs2ninjas", "brunofin"];
 
 
 function ajaxRequest(url, renderFunction) {
@@ -31,12 +31,19 @@ function ajaxRequest(url, renderFunction) {
 
 function getChannelInfo(channelsList) {
 
+    if (!$.isArray(channelsList)) {
+        channelsList = [channelsList];
+    }
+
+    //Итерации цикла обернуты во временную функцию для того, чтобы значение каждого i сохранялось,
+    // так как ajaxRequest() начинает выполнение позже и возвращиет только последний результат
+
     for (var i = 0; i < channelsList.length; i++) {
-        (function(index) {
+        (function (index) {
             var ChannelsUrls = "https://wind-bow.gomix.me/twitch-api/channels/" + channelsList[index];
             var StreamsUrls = "https://wind-bow.gomix.me/twitch-api/streams/" + channelsList[index];
 
-            ajaxRequest(ChannelsUrls, function (data) {
+            ajaxRequest(ChannelsUrls, function(data) {
                 displayChannelInfo(data);
                 ajaxRequest(StreamsUrls, displayStreamInfo);
             });
@@ -80,6 +87,20 @@ function displayStreamInfo(data) {
     }
 }
 
+function clearSearchResult() {
+    $("#results-block").empty();
+    $(".search-form_target").val('');
+}
+
 $(document).ready(function() {
     getChannelInfo(STREAM_CHANNELS_LIST);
+
+    $(".search-form").on('submit', function(e) {
+        e.preventDefault();
+
+        var channelName = $(".search-form_target").val();
+
+        getChannelInfo(channelName);
+    });
+
 });

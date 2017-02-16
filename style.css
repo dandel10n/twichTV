@@ -127,3 +127,22 @@ footer {
 .channel_name {
     font-size: 20px;
 }
+
+.search-form {
+    margin: 20px;
+}
+
+.search-form_target {
+    width: 250px;
+    height: 30px;
+    padding: 5px;
+}
+
+.search-form_button {
+    height: 30px;
+    width: 70px;
+}
+
+#results-block {
+    font-size: 16px;
+}
