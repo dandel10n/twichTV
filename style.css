@@ -126,7 +126,9 @@ footer {
 }
 
 .channel_name {
-    font-size: 20px;
+    font-size: 18px;
+    line-height: 30px;
+    font-family: 'Roboto Slab', serif;
 }
 
 .search-form {
@@ -166,4 +168,10 @@ footer {
 
 .status.statusOnline {
     background-color: lightgreen;
+}
+
+.stream_description {
+    width: 80%;
+    font-family: Arial, sans-serif;;
+    font-size: 14px;
 }

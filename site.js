@@ -7,7 +7,7 @@
 
 //enhancement сделать форму, в которую можно ввести логин, информация о котором интересна
 
-var STREAM_CHANNELS_LIST = ["ESL_SC2", "OgamingSC2", "cretetion", "storbeck", "habathcx", "RobotCaleb", "noobs2ninjas", "brunofin"];
+var STREAM_CHANNELS_LIST = ["freecodecamp", "ESL_SC2", "OgamingSC2", "cretetion", "storbeck", "habathcx", "RobotCaleb", "noobs2ninjas", "brunofin"];
 
 
 function ajaxRequest(url, renderFunction) {
@@ -54,11 +54,12 @@ function getChannelInfo(channelsList) {
 }
 
 function displayChannelInfo(data) {
-    console.log(data);
-    var channelBlock = $('<a />').attr('id', data._id);
-    channelBlock.attr('class', 'channel');
-    channelBlock.attr('href', data.url);
-    channelBlock.attr('target', '_blank');
+    var channelBlock = $('<a />').attr({
+        id: data._id,
+        class: 'channel',
+        href: data.url,
+        target: '_blank'
+    });
 
     var logoElementBlock = $('<div />').attr('class', 'channel_logo');
     var logoElement = $('<img>');
@@ -71,24 +72,26 @@ function displayChannelInfo(data) {
     channelBlock.append(logoElementBlock);
     $('#results-block').append(channelBlock);
 
+    var contentElementBlock = $('<div />').attr('class', 'channel_content');
     var channelNameElement = $('<p />').attr('class', 'channel_name').text(data.display_name);
-    channelBlock.append(channelNameElement);
+    channelBlock.append(contentElementBlock);
+    contentElementBlock.append(channelNameElement);
 
     var streamStatus = $('<div />').addClass("status").text('Offline');
 
     if (data.error) {
         streamStatus.addClass('errorStatus').text('Error');
-        channelBlock.append(
+        contentElementBlock.append(
             $('<p />').attr('class', 'channel_name').text(data.message)
         );
     }
 
-    channelBlock.append(streamStatus);
+    contentElementBlock.append(streamStatus);
 }
 
 function displayStreamInfo(data) {
     if (data.stream) {
-        var thisElement = '#' + data.stream.channel._id;
+        var thisElement = $('#' + data.stream.channel._id).find(".channel_content");
         $(thisElement).find('.status').addClass('statusOnline').html('Online');
 
         var streamDescriptionElement = $('<p />').attr('class', 'stream_description').text(data.stream.channel.status);
